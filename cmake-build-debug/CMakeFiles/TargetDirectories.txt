@@ -1,0 +1,3 @@
+/Users/josefschmidt/Desktop/machine-project-2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/josefschmidt/Desktop/machine-project-2/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/josefschmidt/Desktop/machine-project-2/cmake-build-debug/CMakeFiles/machine_project_2.dir
