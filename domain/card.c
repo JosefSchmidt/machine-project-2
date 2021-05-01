@@ -11,7 +11,7 @@ struct card {
     int x;
     int y;
     struct card *next;
-    struct card *previous
+    struct card *previous;
 } *head, *last;
 
 
