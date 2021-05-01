@@ -23,7 +23,7 @@ void printBoard() {
 };
 
 void printCommandBox(char * firstCommand, char * secondCommand, char * lastCommand) {
-    
+
     printf("LAST Command: %s", lastCommand);
     printf("\n");
     printf("Message: ");
