@@ -9,7 +9,6 @@ void getUserInput(char * firstCommand, char * secondCommand, char * lastCommand)
     int count = 0;
 
     strcpy(tempInput, input);
-//HEllo
 
     whiteSpaceSeparator = strtok(tempInput, " ");
     while (whiteSpaceSeparator != NULL) {
