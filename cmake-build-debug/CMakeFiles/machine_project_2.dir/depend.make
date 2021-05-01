@@ -5,4 +5,5 @@ CMakeFiles/machine_project_2.dir/main.c.o: ../board.c
 CMakeFiles/machine_project_2.dir/main.c.o: ../domain/card.c
 CMakeFiles/machine_project_2.dir/main.c.o: ../main.c
 CMakeFiles/machine_project_2.dir/main.c.o: ../utilities/get-user-input.c
+CMakeFiles/machine_project_2.dir/main.c.o: ../utilities/reset-commands.c
 

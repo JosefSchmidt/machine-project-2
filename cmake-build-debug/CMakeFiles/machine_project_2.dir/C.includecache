@@ -25,6 +25,10 @@ domain/card.c
 /Users/josefschmidt/Desktop/machine-project-2/domain/card.c
 board.c
 /Users/josefschmidt/Desktop/machine-project-2/board.c
+utilities/reset-commands.c
+/Users/josefschmidt/Desktop/machine-project-2/utilities/reset-commands.c
 
 /Users/josefschmidt/Desktop/machine-project-2/utilities/get-user-input.c
+
+/Users/josefschmidt/Desktop/machine-project-2/utilities/reset-commands.c
 

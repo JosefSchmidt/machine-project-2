@@ -4,6 +4,7 @@
 
 // Function declarations
 char getDeckType(int type);
+
 char getDeckValue(int value);
 
 struct card {
@@ -15,9 +16,8 @@ struct card {
 } *head, *last;
 
 
-
-void createDefaultCardList() {
-    struct card * newCard;
+void createDefaultCardList(char *message) {
+    struct card *newCard;
     int headerHasBeenSet = 0;
 
     head = (struct card *) malloc(sizeof(struct card));
@@ -34,17 +34,16 @@ void createDefaultCardList() {
                 char cardValue = getDeckValue(j);
 
                 // Create the card name (String)
-                char name [] = {cardValue, cardType, '\0'};
+                char name[] = {cardValue, cardType, '\0'};
 
-                if(headerHasBeenSet == 0) {
+                if (headerHasBeenSet == 0) {
                     strcpy(head->name, name);
                     head->previous = NULL;
                     head->next = NULL;
                     headerHasBeenSet = 1;
                     last = head;
-                }
-                else {
-                    newCard = (struct card *)malloc(sizeof (struct card));
+                } else {
+                    newCard = (struct card *) malloc(sizeof(struct card));
                     strcpy(newCard->name, name);
                     newCard->previous = head;
                     newCard->next = NULL;
@@ -55,20 +54,44 @@ void createDefaultCardList() {
             }
         }
 
-        printf("Cards has been successfully created!\n\n");
+        strcpy(message, "OK");
     }
 }
 
-void displayCardListFromFirst() {
-    struct card * temporaryCard;
+void uploadDeckOfCards(char filePath[], char *message) {
 
-    if(head == NULL) {
+    // "/Users/josefschmidt/Desktop/machine-project-2/my_file.txt"
+    FILE *in_file = fopen(filePath, "r");
+
+    // test for files not existing.
+    if (in_file == NULL) {
+        strcpy(message, "Error! File could not be found");
+        return;
+    }
+
+    char int_var_1[2000];
+
+
+    // Load in the cards from file and validate cards
+    while (fgets(int_var_1, 2000, in_file) != NULL) {
+        printf("%s", int_var_1);
+    }
+    fclose(in_file);
+
+
+    strcpy(message, "Uploaded cards from file");
+}
+
+void displayCardListFromFirst() {
+    struct card *temporaryCard;
+
+    if (head == NULL) {
         printf("The deck is empty");
     } else {
         temporaryCard = head;
         printf("The cards are: \n");
 
-        while(temporaryCard != NULL) {
+        while (temporaryCard != NULL) {
             printf("Card: %s\n", temporaryCard->name);
             temporaryCard = temporaryCard->next;
         }

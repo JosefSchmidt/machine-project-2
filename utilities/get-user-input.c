@@ -1,8 +1,8 @@
 
-void getUserInput(char * firstCommand, char * secondCommand, char * lastCommand) {
+void getUserInput(char *firstCommand, char *secondCommand, char *lastCommand) {
     char input[100];
     char tempInput[100];
-    char * whiteSpaceSeparator;
+    char *whiteSpaceSeparator;
     int count = 0;
 
     fgets(input, 100, stdin);
@@ -18,6 +18,7 @@ void getUserInput(char * firstCommand, char * secondCommand, char * lastCommand)
             strcpy(firstCommand, whiteSpaceSeparator);
             count++;
             whiteSpaceSeparator = strtok(NULL, " ");
+            strcpy(secondCommand, "");
         } else if (count == 1) {
             strcpy(secondCommand, whiteSpaceSeparator);
             break;

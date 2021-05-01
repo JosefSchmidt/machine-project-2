@@ -22,7 +22,8 @@ void printBoard() {
     }
 };
 
-void printCommandBox(char *firstCommand, char *secondCommand, char *lastCommand, char *message) {
+void printCommandBox(char *firstCommand, char *secondCommand, char *lastCommand, char message[]) {
+
 
     printf("LAST Command: %s", lastCommand);
     printf("\n");
