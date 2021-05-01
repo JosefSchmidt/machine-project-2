@@ -9,8 +9,7 @@ int main() {
     int gameStarted = 0;
 
     char lastCommand[50] = " ";
-    char message[] = " ";
-    char * pMessage = message;
+    char message[50] = " ";
 
     char firstCommand[50];
     char secondCommand[50];
@@ -20,6 +19,7 @@ int main() {
 
     while (startUpPhase == 1) {
         printCommandBox(firstCommand, secondCommand, lastCommand, message);
+
 
 
         /** START UP PHASE **/
@@ -37,7 +37,8 @@ int main() {
 
         // START GAME (P)
         if (strcmp(firstCommand, "P") == 0) {
-            printf("GAME STARTED");
+            strcpy(message, "GAME STARTED");
+
             gameStarted = 1;
         }
 
@@ -52,6 +53,8 @@ int main() {
 
             // QUIT CURRENT GAME AND RETURN TO START UP PHASE (Q)
             if (strcmp(firstCommand, "Q") == 0) {
+                strcpy(message, "Returned to STARTUP PHASE");
+
                 gameStarted = 0;
             }
 
@@ -70,14 +73,16 @@ int main() {
                     strcmp(firstCommand, "SE") == 0 ||
                     strcmp(firstCommand, "SD") == 0
                     ) {
-                strcpy(pMessage, "Command not available in the PLAY phase");
+                strcpy(message, "Command not available in the PLAY phase");
 
             }
 
+            // Print the empty board
+            printEmptyBoard();
         }
 
     }
-    
+
 //    createDefaultCardList();
 //    displayCardListFromFirst();
 }
