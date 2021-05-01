@@ -1,15 +1,16 @@
 
 void getUserInput(char * firstCommand, char * secondCommand, char * lastCommand) {
     char input[100];
-    char * whiteSpaceSeparator;
-
     char tempInput[100];
-
-    fgets(input, 100, stdin);
+    char * whiteSpaceSeparator;
     int count = 0;
 
+    fgets(input, 100, stdin);
+
+    // Remove new line after in string after using fgets
+    input[strcspn(input, "\n")] = 0;
+
     strcpy(tempInput, input);
-//HEllo
 
     whiteSpaceSeparator = strtok(tempInput, " ");
     while (whiteSpaceSeparator != NULL) {
