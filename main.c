@@ -12,6 +12,7 @@ int main() {
     char firstCommand[50];
     char secondCommand[50];
 
+// Hej Lau
 
     while(gameOn == 1) {
 
