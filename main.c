@@ -14,6 +14,8 @@ int main() {
     char firstCommand[50];
     char secondCommand[50];
 
+    int showCards = 0;
+
 
     // Print default empty board
     printEmptyBoard();
@@ -33,12 +35,14 @@ int main() {
             } else {
                 uploadDeckOfCards(secondCommand, message);
             }
+            printHiddenBoard(message);
             resetCommands(firstCommand, secondCommand);
         }
 
             // SHOW DECK OF CARDS (SW)
         else if (strcmp(firstCommand, "SW") == 0) {
             printBoard(message);
+            showCards = 1;
         }
 
             // QUIT PROGRAM (QQ)
@@ -49,11 +53,24 @@ int main() {
             // START GAME (P)
         else if (strcmp(firstCommand, "P") == 0) {
             strcpy(message, "GAME STARTED");
-
             gameStarted = 1;
         } else {
-            // Print the empty board
-            printEmptyBoard();
+
+            // No cards on board
+            if (head == NULL) {
+                // Print the empty board
+                printEmptyBoard();
+
+            }
+                // Cards are showing on board
+            else if (showCards == 1) {
+                printBoard(message);
+            }
+                // Cards are hidden on board
+            else {
+                printHiddenBoard(message);
+            }
+
             strcpy(message, " ");
         }
 
