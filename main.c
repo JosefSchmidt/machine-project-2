@@ -35,12 +35,6 @@ int main() {
             } else {
                 uploadDeckOfCards(secondCommand, message);
             }
-            if (head == NULL) {
-                printEmptyBoard();
-            } else {
-                printHiddenBoard(message);
-
-            }
             resetCommands(firstCommand, secondCommand);
         }
 

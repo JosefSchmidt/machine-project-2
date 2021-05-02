@@ -2,13 +2,21 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 // Function declarations
 char getDeckType(int type);
+
 char getDeckValue(int value);
+
 int getHighestCardPosition();
+
 void deleteCardList();
 
-        struct card {
+void printEmptyBoard();
+
+void printHiddenBoard();
+
+struct card {
     char name[3];
     int x;
     int y;
@@ -24,7 +32,9 @@ void createDefaultCardList(char *message) {
     head = (struct card *) malloc(sizeof(struct card));
 
     if (head == NULL) {
-        printf("Unable to allocate memory");
+        strcpy(message, "Error! Unable to allocate memory");
+        printEmptyBoard();
+        return;
     } else {
         int y = 0;
         int x = 0;
@@ -71,6 +81,7 @@ void createDefaultCardList(char *message) {
         }
 
         strcpy(message, "OK");
+        printHiddenBoard();
     }
 }
 
@@ -83,34 +94,81 @@ void uploadDeckOfCards(char filePath[], char *message) {
     if (in_file == NULL) {
         deleteCardList();
         strcpy(message, "Error! File could not be found");
+        printEmptyBoard();
         return;
     }
 
-    char int_var_1[2000];
+    // Delete the current card list
+    deleteCardList();
 
+    struct card *newCard;
+    int headerHasBeenSet = 0;
+    head = (struct card *) malloc(sizeof(struct card));
+    int cardCount = 0;
+
+    if (head == NULL) {
+        strcpy(message, "Error! Unable to allocate memory");
+        printEmptyBoard();
+        return;
+    }
+    int y = 0;
+    int x = 0;
+
+    char line[3];
 
     // Load in the cards from file and validate cards
-    while (fgets(int_var_1, 2000, in_file) != NULL) {
-        printf("%s", int_var_1);
+    while (fscanf(in_file, "%s", line) != EOF) {
+
+        if (headerHasBeenSet == 0) {
+            printf("%s X: %d, Y: %d \n", line, x, y);
+            strcpy(head->name, line);
+            head->previous = NULL;
+            head->next = NULL;
+            head->x = x;
+            head->y = y;
+            headerHasBeenSet = 1;
+            last = head;
+        } else {
+            printf("%s X: %d, Y: %d \n", line, x, y);
+            newCard = (struct card *) malloc(sizeof(struct card));
+            strcpy(newCard->name, line);
+            newCard->previous = head;
+            newCard->next = NULL;
+            newCard->x = x;
+            newCard->y = y;
+
+            last->next = newCard;
+            last = newCard;
+        }
+
+        cardCount = cardCount + 1;
+
+        if (x < 6) {
+            x = x + 1;
+        } else {
+            x = 0;
+            y = y + 1;
+        }
     }
+
+
     fclose(in_file);
 
-
     strcpy(message, "Uploaded cards from file");
+    printHiddenBoard();
 }
 
 void displayCardListFromFirst() {
 
     int y = getHighestCardPosition();
 
-    for (int i = 0; i <y; ++i) {
-        for (int j = 0; j <7; ++j) {
+    for (int i = 0; i < y; ++i) {
+        for (int j = 0; j < 7; ++j) {
 
         }
     }
 
     struct card *temporaryCard;
-
 
 
     if (head == NULL) {
@@ -120,7 +178,7 @@ void displayCardListFromFirst() {
         printf("The cards are: \n");
 
         while (temporaryCard != NULL) {
-            printf("Card: %s, X: %d, Y: %d\n", temporaryCard->name, temporaryCard->x, temporaryCard->y);
+            printf("%s\n", temporaryCard->name);
             temporaryCard = temporaryCard->next;
         }
     }
@@ -184,8 +242,8 @@ int getHighestCardPosition() {
 }
 
 void deleteCardList() {
-    struct card * current = head;
-    struct card * next;
+    struct card *current = head;
+    struct card *next;
 
     while (current != NULL) {
         next = current->next;
@@ -195,3 +253,4 @@ void deleteCardList() {
 
     head = NULL;
 }
+
