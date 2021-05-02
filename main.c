@@ -22,7 +22,6 @@ int main() {
         printCommandBox(firstCommand, secondCommand, lastCommand, message);
 
 
-
         /** START UP PHASE **/
 
         // LOAD FILE - File not specified
@@ -37,6 +36,11 @@ int main() {
             resetCommands(firstCommand, secondCommand);
         }
 
+            // SHOW DECK OF CARDS (SW)
+        else if (strcmp(firstCommand, "SW") == 0) {
+            printBoard(message);
+        }
+
             // QUIT PROGRAM (QQ)
         else if (strcmp(firstCommand, "QQ") == 0) {
             break;
@@ -48,11 +52,11 @@ int main() {
 
             gameStarted = 1;
         } else {
+            // Print the empty board
+            printEmptyBoard();
             strcpy(message, " ");
         }
 
-        // Print the empty board
-        printEmptyBoard();
 
         /** IN GAME PHASE **/
 

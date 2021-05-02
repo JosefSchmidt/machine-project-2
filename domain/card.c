@@ -4,8 +4,8 @@
 
 // Function declarations
 char getDeckType(int type);
-
 char getDeckValue(int value);
+int getHighestCardPosition();
 
 struct card {
     char name[3];
@@ -25,6 +25,9 @@ void createDefaultCardList(char *message) {
     if (head == NULL) {
         printf("Unable to allocate memory");
     } else {
+        int y = 0;
+        int x = 0;
+
         // Card type
         for (int i = 1; i <= 4; i++) {
             char cardType = getDeckType(i);
@@ -36,10 +39,13 @@ void createDefaultCardList(char *message) {
                 // Create the card name (String)
                 char name[] = {cardValue, cardType, '\0'};
 
+
                 if (headerHasBeenSet == 0) {
                     strcpy(head->name, name);
                     head->previous = NULL;
                     head->next = NULL;
+                    head->x = x;
+                    head->y = y;
                     headerHasBeenSet = 1;
                     last = head;
                 } else {
@@ -47,9 +53,18 @@ void createDefaultCardList(char *message) {
                     strcpy(newCard->name, name);
                     newCard->previous = head;
                     newCard->next = NULL;
+                    newCard->x = x;
+                    newCard->y = y;
 
                     last->next = newCard;
                     last = newCard;
+                }
+
+                if (x == 6) {
+                    x = 0;
+                    y = y + 1;
+                } else {
+                    x = x + 1;
                 }
             }
         }
@@ -83,7 +98,18 @@ void uploadDeckOfCards(char filePath[], char *message) {
 }
 
 void displayCardListFromFirst() {
+
+    int y = getHighestCardPosition();
+
+    for (int i = 0; i <y; ++i) {
+        for (int j = 0; j <7; ++j) {
+
+        }
+    }
+
     struct card *temporaryCard;
+
+
 
     if (head == NULL) {
         printf("The deck is empty");
@@ -92,7 +118,7 @@ void displayCardListFromFirst() {
         printf("The cards are: \n");
 
         while (temporaryCard != NULL) {
-            printf("Card: %s\n", temporaryCard->name);
+            printf("Card: %s, X: %d, Y: %d\n", temporaryCard->name, temporaryCard->x, temporaryCard->y);
             temporaryCard = temporaryCard->next;
         }
     }
@@ -131,7 +157,28 @@ char getDeckValue(int value) {
         return 'Q';
     } else if (value == 13) {
         return 'K';
+    } else if (value == 1) {
+        return 'A';
     } else {
         return value + '0';
     }
 }
+
+int getHighestCardPosition() {
+    int currentLargestY = 0;
+    struct card *current = head;
+
+    while (current != NULL) {
+        if (current->previous == NULL) {
+            currentLargestY = current->y;
+        } else {
+            if (currentLargestY < current->y) {
+                currentLargestY = current->y;
+            }
+        }
+        current = current->next;
+    }
+
+    return currentLargestY;
+}
+
