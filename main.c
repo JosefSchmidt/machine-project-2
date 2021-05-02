@@ -42,6 +42,20 @@ int main() {
         else if (strcmp(firstCommand, "SW") == 0) {
             printBoard(message);
             showCards = 1;
+        } else if (strcmp(firstCommand, "SI") == 0) {
+            if (secondCommand[0] == '\0') {
+
+                int cardPosition = rand() % 52;
+                //splitShuffleDeck(position)
+            } else {
+                int cardPosition = atoi(secondCommand);
+                if (cardPosition > 1 && cardPosition < 52) {
+                    //splitShuffleDeck(position)
+                } else {
+                    strcpy(message, "Error: CardPosition not valid");
+                    printEmptyBoard();
+                }
+            }
         }
 
             // QUIT PROGRAM (QQ)

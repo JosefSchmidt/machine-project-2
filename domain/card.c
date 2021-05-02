@@ -4,9 +4,9 @@
 
 
 // Function declarations
-char getDeckType(int type);
+char getDeckType();
 
-char getDeckValue(int value);
+char getDeckValue();
 
 int getHighestCardPosition();
 
@@ -17,6 +17,8 @@ void printEmptyBoard();
 void printHiddenBoard();
 
 int cardExistsInDeck();
+
+void splitShuffleDeck();
 
 struct card {
     char name[3];
@@ -121,7 +123,7 @@ void uploadDeckOfCards(char filePath[], char *message) {
     // Load in the cards from file and validate cards
     while (fscanf(in_file, "%s", line) != EOF) {
 
-        if(cardCount == 52) {
+        if (cardCount == 52) {
             deleteCardList();
             strcpy(message, "Error! File has to many deck of cards. Limit is 52");
             printEmptyBoard();
@@ -169,33 +171,6 @@ void uploadDeckOfCards(char filePath[], char *message) {
     strcpy(message, "Uploaded cards from file");
     printHiddenBoard();
 }
-
-void displayCardListFromFirst() {
-
-    int y = getHighestCardPosition();
-
-    for (int i = 0; i < y; ++i) {
-        for (int j = 0; j < 7; ++j) {
-
-        }
-    }
-
-    struct card *temporaryCard;
-
-
-    if (head == NULL) {
-        printf("The deck is empty");
-    } else {
-        temporaryCard = head;
-        printf("The cards are: \n");
-
-        while (temporaryCard != NULL) {
-            printf("%s\n", temporaryCard->name);
-            temporaryCard = temporaryCard->next;
-        }
-    }
-}
-
 
 char getDeckType(int type) {
     switch (type) {
@@ -282,4 +257,10 @@ int cardExistsInDeck(const char cardName[]) {
         }
     }
 
+}
+
+void splitShuffleDeck(int cardPosition) {
+    struct card *current = head;
+
+    // Create 2 linkedList and add 
 }
