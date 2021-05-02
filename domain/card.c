@@ -16,6 +16,8 @@ void printEmptyBoard();
 
 void printHiddenBoard();
 
+int cardExistsInDeck();
+
 struct card {
     char name[3];
     int x;
@@ -104,7 +106,6 @@ void uploadDeckOfCards(char filePath[], char *message) {
     struct card *newCard;
     int headerHasBeenSet = 0;
     head = (struct card *) malloc(sizeof(struct card));
-    int cardCount = 0;
 
     if (head == NULL) {
         strcpy(message, "Error! Unable to allocate memory");
@@ -113,14 +114,21 @@ void uploadDeckOfCards(char filePath[], char *message) {
     }
     int y = 0;
     int x = 0;
+    int cardCount = 0;
 
     char line[3];
 
     // Load in the cards from file and validate cards
     while (fscanf(in_file, "%s", line) != EOF) {
 
+        if(cardCount == 52) {
+            deleteCardList();
+            strcpy(message, "Error! File has to many deck of cards. Limit is 52");
+            printEmptyBoard();
+            return;
+        }
+
         if (headerHasBeenSet == 0) {
-            printf("%s X: %d, Y: %d \n", line, x, y);
             strcpy(head->name, line);
             head->previous = NULL;
             head->next = NULL;
@@ -129,7 +137,12 @@ void uploadDeckOfCards(char filePath[], char *message) {
             headerHasBeenSet = 1;
             last = head;
         } else {
-            printf("%s X: %d, Y: %d \n", line, x, y);
+            int alreadyExists = cardExistsInDeck(line);
+
+            if (alreadyExists == 1) {
+                strcpy(message, "Error! Deck is not valid. Has duplicate values");
+                return;
+            }
             newCard = (struct card *) malloc(sizeof(struct card));
             strcpy(newCard->name, line);
             newCard->previous = head;
@@ -140,7 +153,6 @@ void uploadDeckOfCards(char filePath[], char *message) {
             last->next = newCard;
             last = newCard;
         }
-
         cardCount = cardCount + 1;
 
         if (x < 6) {
@@ -254,3 +266,20 @@ void deleteCardList() {
     head = NULL;
 }
 
+
+int cardExistsInDeck(const char cardName[]) {
+    struct card *current = head;
+
+    while (current != NULL) {
+        if (strcmp(current->name, cardName) == 0) {
+            return 1;
+        }
+
+        if (current->next != NULL) {
+            current = current->next;
+        } else {
+            return 0;
+        }
+    }
+
+}
