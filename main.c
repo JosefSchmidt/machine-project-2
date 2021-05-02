@@ -42,15 +42,21 @@ int main() {
         else if (strcmp(firstCommand, "SW") == 0) {
             printBoard(message);
             showCards = 1;
-        } else if (strcmp(firstCommand, "SI") == 0) {
-            if (secondCommand[0] == '\0') {
+        }
+            // SPLIT DECK OF CARDS (SPLIT <number>)
+        else if (strcmp(firstCommand, "SI") == 0) {
+            if (head == NULL) {
+                strcpy(message, "Error! The deck is empty");
+                printEmptyBoard();
+            } else if (secondCommand[0] == '\0') {
 
                 int cardPosition = rand() % 52;
-                //splitShuffleDeck(position)
+                splitShuffleDeck(cardPosition, message);
             } else {
                 int cardPosition = atoi(secondCommand);
                 if (cardPosition > 1 && cardPosition < 52) {
-                    //splitShuffleDeck(position)
+                    splitShuffleDeck(cardPosition, message);
+
                 } else {
                     strcpy(message, "Error: CardPosition not valid");
                     printEmptyBoard();

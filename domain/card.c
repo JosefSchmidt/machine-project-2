@@ -20,6 +20,8 @@ int cardExistsInDeck();
 
 void splitShuffleDeck();
 
+void printBoard();
+
 struct card {
     char name[3];
     int x;
@@ -66,7 +68,7 @@ void createDefaultCardList(char *message) {
                 } else {
                     newCard = (struct card *) malloc(sizeof(struct card));
                     strcpy(newCard->name, name);
-                    newCard->previous = head;
+                    newCard->previous = last;
                     newCard->next = NULL;
                     newCard->x = x;
                     newCard->y = y;
@@ -147,7 +149,7 @@ void uploadDeckOfCards(char filePath[], char *message) {
             }
             newCard = (struct card *) malloc(sizeof(struct card));
             strcpy(newCard->name, line);
-            newCard->previous = head;
+            newCard->previous = last;
             newCard->next = NULL;
             newCard->x = x;
             newCard->y = y;
@@ -259,8 +261,113 @@ int cardExistsInDeck(const char cardName[]) {
 
 }
 
-void splitShuffleDeck(int cardPosition) {
+void splitShuffleDeck(int cardPosition, char *message) {
     struct card *current = head;
 
-    // Create 2 linkedList and add 
+    struct card *firstPileLast = NULL;
+    struct card *secondPileFirst = NULL;
+
+    // Create 2 linkedList and add
+    int count = 0;
+
+    // Split the deck
+    while (current->next != NULL) {
+        count = count + 1;
+        if (count == cardPosition) {
+            firstPileLast = current;
+            secondPileFirst = current->next;
+        } else {
+            current = current->next;
+        }
+    }
+
+
+    struct card *newHead = (struct card *) malloc(sizeof(struct card));;
+    struct card *newLast = (struct card *) malloc(sizeof(struct card));;
+
+    if (newHead == NULL) {
+        strcpy(message, "Error! Unable to allocate memory");
+        printHiddenBoard();
+        return;
+    }
+
+
+    int headerHasBeenSet = 0;
+
+    int y = 0;
+    int x = 0;
+
+    while (firstPileLast != NULL || secondPileFirst != NULL) {
+
+        if (headerHasBeenSet == 0) {
+            strcpy(newHead->name, firstPileLast->name);
+            newHead->previous = NULL;
+            newHead->next = NULL;
+            newHead->x = x;
+            newHead->y = y;
+            headerHasBeenSet = 1;
+            newLast = newHead;
+
+            firstPileLast = firstPileLast->previous;
+
+            if (x < 6) {
+                x = x + 1;
+            } else {
+                x = 0;
+                y = y + 1;
+            }
+        } else {
+
+            if (firstPileLast != NULL) {
+                // First deck
+                struct card *newCard = (struct card *) malloc(sizeof(struct card));
+                strcpy(newCard->name, firstPileLast->name);
+                newCard->previous = newLast;
+                newCard->next = NULL;
+                newCard->x = x;
+                newCard->y = y;
+
+                newLast->next = newCard;
+                newLast = newCard;
+
+                firstPileLast = firstPileLast->previous;
+
+                if (x < 6) {
+                    x = x + 1;
+                } else {
+                    x = 0;
+                    y = y + 1;
+                }
+            }
+
+            if (secondPileFirst != NULL) {
+                // First deck
+                struct card *newCard = (struct card *) malloc(sizeof(struct card));
+                strcpy(newCard->name, secondPileFirst->name);
+                newCard->previous = newLast;
+                newCard->next = NULL;
+                newCard->x = x;
+                newCard->y = y;
+
+                newLast->next = newCard;
+                newLast = newCard;
+
+                secondPileFirst = secondPileFirst->next;
+
+                if (x < 6) {
+                    x = x + 1;
+                } else {
+                    x = 0;
+                    y = y + 1;
+                }
+            }
+        }
+    }
+
+    deleteCardList();
+
+    head = newHead;
+    last = newLast;
+    printBoard(message);
+
 }
