@@ -2,15 +2,23 @@
 
 
 void printEmptyBoard() {
+    int fCount = 1;
+
+
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n");
-    printf("\n");
+    for (int i = 0; i <= 6; ++i) {
+        printf("\n");
+        for (int j = 0; j <= 6; ++j) {
+                printf("\t");
 
+        }
 
-    for (int j = 0; j < 9; ++j) {
-        if (j < 1) printf(" \t \t \t \t \t \t \t\t \tF1\n");
-        if (j < 4)
-            printf(" \t \t \t \t \t \t \t\t \tF1\n");
+        if (i % 2 == 0) {
+            printf("\t\t[]\tF%d", fCount);
+            fCount = fCount + 1;
+        }
     }
+    printf("\n\n");
 
 }
 
@@ -32,7 +40,7 @@ void printHiddenBoard(char *message) {
     for (int i = 0; i <= y; ++i) {
         printf("\n");
         for (int j = 0; j <= 6; ++j) {
-            if (temporaryCard == NULL) {
+            if(temporaryCard == NULL) {
                 printf(" ");
             } else {
                 printf("%[]\t");
@@ -41,7 +49,7 @@ void printHiddenBoard(char *message) {
         }
 
         if (i % 2 == 0) {
-            printf("\t\t\t\t[]\tF%d", fCount);
+            printf("\t\t[]\tF%d", fCount);
             fCount = fCount + 1;
         }
     }
@@ -67,17 +75,17 @@ void printBoard(char *message) {
     for (int i = 0; i <= y; ++i) {
         printf("\n");
         for (int j = 0; j <= 6; ++j) {
-            if (temporaryCard == NULL) {
+            if(temporaryCard == NULL) {
                 printf(" ");
             } else {
-                printf("%s\t", temporaryCard->name);
+            printf("%s\t", temporaryCard->name);
                 temporaryCard = temporaryCard->next;
 
             }
         }
 
         if (i % 2 == 0) {
-            printf("\t\t\t\t[]\tF%d", fCount);
+            printf("\t\t[]\tF%d", fCount);
             fCount = fCount + 1;
         }
     }

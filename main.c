@@ -35,7 +35,12 @@ int main() {
             } else {
                 uploadDeckOfCards(secondCommand, message);
             }
-            printHiddenBoard(message);
+            if (head == NULL) {
+                printEmptyBoard();
+            } else {
+                printHiddenBoard(message);
+
+            }
             resetCommands(firstCommand, secondCommand);
         }
 
@@ -111,8 +116,6 @@ int main() {
 
     }
 
-//    createDefaultCardList();
-//    displayCardListFromFirst();
 }
 
 

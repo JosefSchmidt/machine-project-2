@@ -6,8 +6,9 @@
 char getDeckType(int type);
 char getDeckValue(int value);
 int getHighestCardPosition();
+void deleteCardList();
 
-struct card {
+        struct card {
     char name[3];
     int x;
     int y;
@@ -80,6 +81,7 @@ void uploadDeckOfCards(char filePath[], char *message) {
 
     // test for files not existing.
     if (in_file == NULL) {
+        deleteCardList();
         strcpy(message, "Error! File could not be found");
         return;
     }
@@ -122,7 +124,6 @@ void displayCardListFromFirst() {
             temporaryCard = temporaryCard->next;
         }
     }
-
 }
 
 
@@ -182,3 +183,15 @@ int getHighestCardPosition() {
     return currentLargestY;
 }
 
+void deleteCardList() {
+    struct card * current = head;
+    struct card * next;
+
+    while (current != NULL) {
+        next = current->next;
+        free(current);
+        current = next;
+    }
+
+    head = NULL;
+}
