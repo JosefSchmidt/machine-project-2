@@ -83,6 +83,15 @@ int main() {
                 shuffleDeck(message);
             }
         }
+        // <Game Moves>
+        else if (strcmp(firstCommand, "SR") == 0) {
+            if (head == NULL) {
+                strcpy(message, "Error! The deck is empty");
+                printEmptyBoard();
+            } else {
+                shuffleDeck(message);
+            }
+        }
 
             // QUIT PROGRAM (QQ)
         else if (strcmp(firstCommand, "QQ") == 0) {

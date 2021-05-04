@@ -58,11 +58,10 @@ void printHiddenBoard(char *message) {
 }
 
 void printBoard(char *message) {
-    struct card *temporaryCard;
-    temporaryCard = head;
+    struct card *current = head;
 
 
-    if (temporaryCard == NULL) {
+    if (current == NULL) {
         strcpy(message, "Error! The deck is empty");
         return;
     }
@@ -75,16 +74,23 @@ void printBoard(char *message) {
     for (int i = 0; i <= y; ++i) {
         printf("\n");
         for (int j = 0; j <= 6; ++j) {
-            if(temporaryCard == NULL) {
-                printf(" ");
-            } else {
-            printf("%s\t", temporaryCard->name);
-                temporaryCard = temporaryCard->next;
+            int found = 0;
+            // for loop der looper igennem linked list
+            while(current!=NULL){
+                if(current->x==j && current->y==i){
+                    found = 1;
+                    printf("%s\t",current->name);
+                    break;
+                }
+                current = current->next;
 
+            }
+            if(found == 0){
+                printf(" ");
             }
         }
 
-        if (i % 2 == 0) {
+       if (i % 2 == 0 && fCount<5) {
             printf("\t\t[]\tF%d", fCount);
             fCount = fCount + 1;
         }
