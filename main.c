@@ -59,8 +59,17 @@ int main() {
 
                 } else {
                     strcpy(message, "Error: CardPosition not valid");
-                    printEmptyBoard();
+                    printEmptyBoard(message);
                 }
+            }
+        }
+
+        else if(strcmp(firstCommand, "SR") == 0) {
+            if (head == NULL) {
+                strcpy(message, "Error! The deck is empty");
+                printEmptyBoard();
+            } else {
+                shuffleDeck(message);
             }
         }
 

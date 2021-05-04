@@ -20,6 +20,8 @@ int cardExistsInDeck();
 
 void splitShuffleDeck();
 
+int getLengthOfCard();
+
 void printBoard();
 
 struct card {
@@ -371,3 +373,86 @@ void splitShuffleDeck(int cardPosition, char *message) {
     printBoard(message);
 
 }
+
+void shuffleDeck(char * message) {
+    struct card *current = head;
+
+    struct card *newHead = (struct card *) malloc(sizeof(struct card));
+    struct card *newLast = (struct card *) malloc(sizeof(struct card));
+
+    int headerHasBeenSet = 0;
+
+
+    // Split the deck
+    while (current != NULL) {
+
+        // Place it at random spot in new pile
+        if (headerHasBeenSet == 0) {
+            strcpy(newHead->name, current->name);
+            newHead->previous = NULL;
+            newHead->next = NULL;
+            headerHasBeenSet = 1;
+            newLast = newHead;
+        } else {
+            int length = getLengthOfCard(newHead);
+            int random = 0;
+            if(length != 0) {
+                random = rand() % length;
+            }
+            int count = 0;
+            struct card * newCurrent = newHead;
+
+            while (1) {
+                if (count == random) {
+                    struct card *newCard = (struct card *) malloc(sizeof(struct card));
+                    strcpy(newCard->name, current->name);
+                    newCard->previous = newCurrent;
+                    newCard->next = newCurrent->next;
+                    newCurrent->next = newCard;
+                    newCurrent->next->previous = newCard;
+                    break;
+                } else {
+                    count = count + 1;
+                    newCurrent = newCurrent->next;
+                }
+            }
+        }
+        current = current->next;
+    }
+
+    // Set x and y to all the cards in the new head
+    int y = 0;
+    int x = 0;
+
+    current = newHead;
+    while (current->next != NULL) {
+        current->x = x;
+        current->y = y;
+        current = current->next;
+        if (x < 6) {
+            x = x + 1;
+        } else {
+            x = 0;
+            y = y + 1;
+        }
+    }
+
+    // Update the linkedList
+    head = newHead;
+    last = newLast;
+    printBoard(message);
+}
+
+int getLengthOfCard(struct card header) {
+    struct card *current = &header;
+    int counter = 0;
+
+    while (current != NULL) {
+        counter = counter + 1;
+        current = current->next;
+    }
+
+    return counter;
+}
+
+
