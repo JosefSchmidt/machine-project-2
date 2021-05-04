@@ -14,8 +14,8 @@ int main() {
     char firstCommand[50];
     char secondCommand[50];
 
-    int showCards = 0;
 
+    int showCards = 0;
 
     // Print default empty board
     printEmptyBoard();
@@ -37,6 +37,19 @@ int main() {
             }
             resetCommands(firstCommand, secondCommand);
         }
+
+        // SAVE TO FILE
+        if (strcmp(firstCommand, "SD") == 0) {
+            // If file is included
+            if (secondCommand[0] == '\0') {
+                // Save to deck function...
+
+            } else {
+                strcpy(message, "File is not specified");
+                printEmptyBoard();
+            }
+        }
+
 
             // SHOW DECK OF CARDS (SW)
         else if (strcmp(firstCommand, "SW") == 0) {
@@ -62,9 +75,7 @@ int main() {
                     printEmptyBoard(message);
                 }
             }
-        }
-
-        else if(strcmp(firstCommand, "SR") == 0) {
+        } else if (strcmp(firstCommand, "SR") == 0) {
             if (head == NULL) {
                 strcpy(message, "Error! The deck is empty");
                 printEmptyBoard();

@@ -6,29 +6,3 @@
 
 #IncludeRegexTransform: 
 
-/Users/josefschmidt/Desktop/machine-project-2/board.c
-utilities/get-user-input.c
-/Users/josefschmidt/Desktop/machine-project-2/utilities/get-user-input.c
-
-/Users/josefschmidt/Desktop/machine-project-2/domain/card.c
-stdio.h
--
-stdlib.h
--
-string.h
--
-
-/Users/josefschmidt/Desktop/machine-project-2/main.c
-stdio.h
--
-domain/card.c
-/Users/josefschmidt/Desktop/machine-project-2/domain/card.c
-board.c
-/Users/josefschmidt/Desktop/machine-project-2/board.c
-utilities/reset-commands.c
-/Users/josefschmidt/Desktop/machine-project-2/utilities/reset-commands.c
-
-/Users/josefschmidt/Desktop/machine-project-2/utilities/get-user-input.c
-
-/Users/josefschmidt/Desktop/machine-project-2/utilities/reset-commands.c
-
