@@ -83,23 +83,40 @@ int main() {
                 shuffleDeck(message);
             }
         }
-        // <Game Moves>
-        else if (strcmp(firstCommand, "SR") == 0) {
-            if (head == NULL) {
-                strcpy(message, "Error! The deck is empty");
-                printEmptyBoard();
-            } else {
-                shuffleDeck(message);
-            }
-        }
+
+
 
             // QUIT PROGRAM (QQ)
         else if (strcmp(firstCommand, "QQ") == 0) {
             break;
         }
 
+            // <Game Moves>
+            struct card *temphead = head;
+        int foundFirst = 0;
+        int foundSecond = 0;
+        //Goes through all cards and sees if their name is eqauls to the first command.
+            while(temphead!=NULL){
+                if(strcmp(temphead->name, firstCommand)==0){
+                    foundFirst = 1;
+                }
+                if(strcmp(temphead->name, secondCommand)==0){
+                    foundSecond = 1;
+                }
+                //Check if visible
+                if(foundFirst == 1 && foundSecond == 1){
+                    printf("Found Card\n");
+                    break;
+                }
+                    temphead = temphead ->next;
+
+            }
+            if(foundFirst == 1 && foundSecond == 0){
+                printf("Card not found\n");
+            }
+
             // START GAME (P)
-        else if (strcmp(firstCommand, "P") == 0) {
+         if (strcmp(firstCommand, "P") == 0) {
             strcpy(message, "GAME STARTED");
             gameStarted = 1;
         } else {
