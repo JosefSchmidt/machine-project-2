@@ -4,15 +4,17 @@
 #include "utilities/reset-commands.c"
 
 int main() {
+    //pls write file path for Card.txt in line below between the "", and remove the // from it.
+    char deckSaveFilePath[100] = "\\Users\\steve\\CLionProjects\\machine-project-2\\Card.txt";
 
     int startUpPhase = 1;
     int gameStarted = 0;
 
-    char lastCommand[50] = " ";
+    char lastCommand[100] = " ";
     char message[50] = " ";
 
     char firstCommand[50];
-    char secondCommand[50];
+    char secondCommand[100];
 
 
     int showCards = 0;
@@ -39,14 +41,13 @@ int main() {
         }
 
         // SAVE TO FILE
-        if (strcmp(firstCommand, "SD") == 0) {
+         else if (strcmp(firstCommand, "SD") == 0) {
             // If file is included
             if (secondCommand[0] == '\0') {
                 // Save to deck function...
-
+                SaveDeckOfCards(deckSaveFilePath, message);
             } else {
-                strcpy(message, "File is not specified");
-                printEmptyBoard();
+                SaveDeckOfCards(secondCommand, message);
             }
         }
 
