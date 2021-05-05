@@ -28,6 +28,7 @@ struct card {
     char name[3];
     int x;
     int y;
+    int visible;
     struct card *next;
     struct card *previous;
 } *head, *last;
@@ -63,6 +64,7 @@ void createDefaultCardList(char *message) {
                     strcpy(head->name, name);
                     head->previous = NULL;
                     head->next = NULL;
+                    head->visible = 1;
                     head->x = x;
                     head->y = y;
                     headerHasBeenSet = 1;
@@ -72,6 +74,7 @@ void createDefaultCardList(char *message) {
                     strcpy(newCard->name, name);
                     newCard->previous = last;
                     newCard->next = NULL;
+                    newCard->visible = 1;
                     newCard->x = x;
                     newCard->y = y;
 
@@ -137,6 +140,7 @@ void uploadDeckOfCards(char filePath[], char *message) {
             strcpy(head->name, line);
             head->previous = NULL;
             head->next = NULL;
+            head->visible = 1;
             head->x = x;
             head->y = y;
             headerHasBeenSet = 1;
@@ -152,6 +156,7 @@ void uploadDeckOfCards(char filePath[], char *message) {
             strcpy(newCard->name, line);
             newCard->previous = last;
             newCard->next = NULL;
+            newCard->visible = 1;
             newCard->x = x;
             newCard->y = y;
 
