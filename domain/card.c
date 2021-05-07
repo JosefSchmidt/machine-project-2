@@ -594,10 +594,12 @@ void extendedCardMove(char *columnName, char *moverName, char *destinationName, 
 
         if (found == 1) {
             // Check if card value is one timer larger than moverCard
-            if (fCard->name[1] != mover->name[1]) {
-                int fCardValue = getCardValue(fCard->name[0]);
-                int moverCardValue = getCardValue(mover->name[0]);
-                if (fCardValue - moverCardValue == 1) {
+            if (fCard->name[1] == mover->name[1]) {
+                char input1[2] = {fCard->name[0]};
+                char input2[2] = {mover->name[0]};
+                int fCardValue = getCardValue(input1);
+                int moverCardValue = getCardValue(input2);
+                if (moverCardValue - fCardValue == 1) {
                     mover->fPosition = fCard->fPosition;
                     mover->x = -1;
                     mover->y = -1;
@@ -657,6 +659,18 @@ void extendedCardMove(char *columnName, char *moverName, char *destinationName, 
         mover->x = destinationNr;
 
 
+        if (previousY > 0) {
+            while (current != NULL) {
+                if (current->x == previousX && current->y == previousY - 1) {
+                    current->visible = 1;
+                    break;
+                }
+                current = current->next;
+            }
+            current = head;
+        }
+
+
         // Do the same for mover's children
         int count = 1;
 
@@ -685,6 +699,17 @@ void extendedCardMove(char *columnName, char *moverName, char *destinationName, 
                 mover->y = destination->y + 1;
                 mover->x = destination->x;
 
+                if (previousY > 0) {
+                    while (current != NULL) {
+                        if (current->x == previousX && current->y == previousY - 1) {
+                            current->visible = 1;
+                            break;
+                        }
+                        current = current->next;
+                    }
+                    current = head;
+                }
+
                 // Do the same for mover's children
                 int count = 1;
                 while (current != NULL) {
@@ -704,14 +729,6 @@ void extendedCardMove(char *columnName, char *moverName, char *destinationName, 
             return;
         }
     }
-
-
-
-    // Find the mover card -> x & y cordinates 👍🏻
-
-    // Find the destination column -> x & y cordinates
-
-    // Destination can only be a column or a f1 destination
 
 
     strcpy(message, "OK");
@@ -781,7 +798,7 @@ int getCardValue(char *cardNumber) {
     } else if (strcmp(cardNumber, "Q") == 0) {
         return 12;
     } else if (strcmp(cardNumber, "K") == 0) {
-        return 2;
+        return 13;
     } else {
         return -1;
     }
