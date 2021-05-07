@@ -92,18 +92,19 @@ int main() {
 
             // START GAME (P)
          else if (strcmp(firstCommand, "P") == 0) {
-            strcpy(message, "GAME STARTED");
-            gameStarted = 1;
-        } else {
-
             // No cards on board
             if (head == NULL) {
                 // Print the empty board
+                strcpy(message, "ERROR no cards");
                 printEmptyBoard();
-
+            }else {
+                strcpy(message, "GAME STARTED");
+                gameStarted = 1;
+                sortGameCards();
             }
+        } else {
                 // Cards are showing on board
-            else if (showCards == 1) {
+            if (showCards == 1) {
                 printBoard(message);
             }
                 // Cards are hidden on board
@@ -149,6 +150,16 @@ int main() {
             struct card *temphead = head;
             int foundFirst = 0;
             int foundSecond = 0;
+
+            //C4:H4->F5
+            if(firstCommand[5] == '-' && firstCommand[6] == '>'){
+
+            }
+
+            //C4->F5
+            if(firstCommand[2] == '-' && firstCommand[3] == '>'){
+
+            }
             //Goes through all cards and sees if their name is equals to the first command.
             while(temphead!=NULL){
                 if(strcmp(temphead->name, firstCommand)==0 && temphead->visible == 1){

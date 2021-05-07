@@ -474,4 +474,46 @@ int getLengthOfCard(struct card header) {
     return counter;
 }
 
+void sortGameCards(){
+    struct card *current = head;
+    int countx = 1;
+    int county = 0;
+    while(current != NULL){
+        if(current->previous == NULL){
+            current->x = 0;
+            current->y = 0;
+        } else {
+            current->x = countx;
+            current->y = county;
+
+            if (county == 5 && countx == 6) {
+                countx = 2;
+                county = county + 1;
+            } else if (county == 6 && countx == 6) {
+                countx = 3;
+                county = county + 1;
+            } else if (county == 7 && countx == 6) {
+                countx = 4;
+                county = county + 1;
+            } else if (county == 8 && countx == 6) {
+                countx = 5;
+                county = county + 1;
+            } else if (county == 9 && countx == 6) {
+                countx = 6;
+                county = county + 1;
+            } else if(countx == 6){
+                county = county + 1;
+                countx = 1;
+            } else{
+                countx = countx + 1;
+            }
+        }
+        current = current->next;
+    }
+    current = head;
+    while(current != NULL){
+        printf("name: %s, x: %d y: %d\n", current->name, current->x, current->y );
+        current = current->next;
+    }
+}
 

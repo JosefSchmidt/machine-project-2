@@ -69,6 +69,7 @@ void printBoard(char *message) {
     int y = getHighestCardPosition();
     int fCount = 1;
 
+    printf("highestcard: %d",y);
 
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n");
     for (int i = 0; i <= y; ++i) {
