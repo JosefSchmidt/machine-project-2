@@ -1,6 +1,28 @@
 #include "utilities/get-user-input.c"
 
 
+void printEmptyBoard() {
+    int fCount = 1;
+
+
+    printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n");
+    for (int i = 0; i <= 6; ++i) {
+        printf("\n");
+        for (int j = 0; j <= 6; ++j) {
+            printf("\t");
+
+        }
+
+        if (i % 2 == 0) {
+            printf("\t\t[]\tF%d", fCount);
+            fCount = fCount + 1;
+        }
+    }
+    printf("\n\n");
+
+}
+
+
 void printHiddenBoard(char *message) {
     struct card *temporaryCard;
     temporaryCard = head;
@@ -82,12 +104,33 @@ void printBoard(char *message) {
             }
         }
 
+        current = head;
         if (i % 2 == 0 && fCount < 5) {
-            printf("\t\t[]\tF%d", fCount);
+            int found = 0;
+            while (current != NULL) {
+                if (fCount == 1 && current->fPosition == 10) {
+                    found = 1;
+                    printf("\t\t%s\tF%d", current->name, fCount);
+                } else if (fCount == 2 && current->fPosition == 20) {
+                    found = 1;
+                    printf("\t\t%s\tF%d", current->name, fCount);
+                } else if (fCount == 3 && current->fPosition == 30) {
+                    found = 1;
+                    printf("\t\t%s\tF%d", current->name, fCount);
+                } else if (fCount == 4 && current->fPosition == 40) {
+                    found = 1;
+                    printf("\t\t%s\tF%d", current->name, fCount);
+                }
+                current = current->next;
+            }
+
+            if (found == 0) {
+                printf("\t\t[]\tF%d", fCount);
+            }
+            current = head;
             fCount = fCount + 1;
         }
     }
-    strcpy(message, "OK");
 
     printf("\n\n");
 };

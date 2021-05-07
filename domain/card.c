@@ -26,15 +26,19 @@ void printBoard();
 
 void showAllCards();
 
-        struct card {
+int getColumnInteger();
+
+int getCardValue();
+
+struct card {
     char name[3];
     int x;
     int y;
     int visible;
+    int fPosition;
     struct card *next;
     struct card *previous;
 } *head, *last;
-
 
 void createDefaultCardList(char *message) {
     struct card *newCard;
@@ -90,8 +94,6 @@ void createDefaultCardList(char *message) {
                 }
             }
         }
-
-        strcpy(message, "OK");
     }
 }
 
@@ -542,3 +544,245 @@ void showAllCards() {
     };
 }
 
+
+void extendedCardMove(char *columnName, char *moverName, char *destinationName, char *message) {
+    struct card *mover = NULL;
+    struct card *destination = NULL;
+    struct card *fCard = NULL;
+    struct card *current = head;
+
+
+    int columnNr = getColumnInteger(columnName);
+
+    // Not valid column name
+    if (columnNr == -1) {
+        strcpy(message, "Error: No a valid input form");
+        return;
+    }
+
+    // It's a column
+    while (current != NULL) {
+        if (strcmp(moverName, current->name) == 0) {
+            if (current->visible != 1) {
+                strcpy(message, "Error: MoverCard is not visible");
+                return;
+            } else if ((current->x != columnNr) && current->fPosition != columnNr) {
+                strcpy(message, "Error: MoverCard not in specfied column");
+                return;
+            }
+            mover = current;
+            current = head;
+            break;
+        }
+        current = current->next;
+    }
+
+    int destinationNr = getColumnInteger(destinationName);
+
+    if (destinationNr == 10 || destinationNr == 20 || destinationNr == 30 || destinationNr == 40) {
+
+        int found = 0;
+        while (current != NULL) {
+            if (current->fPosition == destinationNr) {
+                fCard = current;
+                found = 1;
+                current = head;
+                break;
+            }
+            current = current->next;
+        }
+
+        if (found == 1) {
+            // Check if card value is one timer larger than moverCard
+            if (fCard->name[1] != mover->name[1]) {
+                int fCardValue = getCardValue(fCard->name[0]);
+                int moverCardValue = getCardValue(mover->name[0]);
+                if (fCardValue - moverCardValue == 1) {
+                    mover->fPosition = fCard->fPosition;
+                    mover->x = -1;
+                    mover->y = -1;
+                    fCard->fPosition = -1;
+                } else {
+                    strcpy(message, "Error: Move not allowed");
+                    return;
+                }
+            } else {
+                strcpy(message, "Error: Move not allowed");
+                return;
+            }
+        } else {
+            current = head;
+
+            // Is the moverCard for the correct f destination and is it an es
+            if (mover->name[0] == 'A') {
+                if (
+                        (mover->name[1] == 'C' && destinationNr == 10) ||
+                        (mover->name[1] == 'D' && destinationNr == 20) ||
+                        (mover->name[1] == 'H' && destinationNr == 30) ||
+                        (mover->name[1] == 'S' && destinationNr == 40)
+                        ) {
+                    mover->x = -1;
+                    mover->y = -1;
+                    mover->fPosition = destinationNr;
+                } else {
+                    strcpy(message, "Error: Move not allowed");
+                    return;
+                }
+            } else {
+                strcpy(message, "Error: Move not allowed");
+                return;
+            }
+        }
+
+    }
+
+
+    int highestCount = -1;
+
+    while (current != NULL) {
+        if (destinationNr == current->x && highestCount < current->y) {
+            highestCount = current->y;
+            destination = current;
+        }
+        current = current->next;
+    }
+    current = head;
+
+
+    if (destination == NULL) {
+        int previousY = mover->y;
+        int previousX = mover->x;
+
+        mover->y = 0;
+        mover->x = destinationNr;
+
+
+        // Do the same for mover's children
+        int count = 1;
+
+        while (current != NULL) {
+            if (current->x == previousX && current->y == previousY + count) {
+                current->y = mover->y + count;
+                current->x = destinationNr;
+                count = count + 1;
+                current = head;
+            }
+            current = current->next;
+        }
+        current = head;
+
+    } else {
+        if (mover->name[1] != destination->name[1]) {
+            char input1[2] = {mover->name[0]};
+            char input2[2] = {destination->name[0]};
+
+            int moverValue = getCardValue(input1);
+            int destinationValue = getCardValue(input2);
+            if (destinationValue - moverValue == 1) {
+                int previousY = mover->y;
+                int previousX = mover->x;
+
+                mover->y = destination->y + 1;
+                mover->x = destination->x;
+
+                // Do the same for mover's children
+                int count = 1;
+                while (current != NULL) {
+                    if (current->x == previousX && current->y == previousY + count) {
+                        current->y = mover->y + count;
+                        current->x = destination->x;
+                        count = count + 1;
+                        current = head;
+                    }
+                    current = current->next;
+                }
+                current = head;
+            }
+
+        } else {
+            strcpy(message, "Error: Move not allowed");
+            return;
+        }
+    }
+
+
+
+    // Find the mover card -> x & y cordinates 👍🏻
+
+    // Find the destination column -> x & y cordinates
+
+    // Destination can only be a column or a f1 destination
+
+
+    strcpy(message, "OK");
+
+
+}
+
+void cardMove() {
+
+}
+
+int getColumnInteger(char *columnName) {
+
+    // Columns
+    if (strcmp(columnName, "C1") == 0) {
+        return 0;
+    } else if (strcmp(columnName, "C2") == 0) {
+        return 1;
+    } else if (strcmp(columnName, "C3") == 0) {
+        return 2;
+    } else if (strcmp(columnName, "C4") == 0) {
+        return 3;
+    } else if (strcmp(columnName, "C5") == 0) {
+        return 4;
+    } else if (strcmp(columnName, "C6") == 0) {
+        return 5;
+    } else if (strcmp(columnName, "C7") == 0) {
+        return 6;
+    }
+        // Sections
+    else if (strcmp(columnName, "F1") == 0) {
+        return 10;
+    } else if (strcmp(columnName, "F2") == 0) {
+        return 20;
+    } else if (strcmp(columnName, "F3") == 0) {
+        return 30;
+    } else if (strcmp(columnName, "F4") == 0) {
+        return 40;
+    } else {
+        return -1;
+    }
+};
+
+int getCardValue(char *cardNumber) {
+    if (strcmp(cardNumber, "A") == 0) {
+        return 1;
+    } else if (strcmp(cardNumber, "2") == 0) {
+        return 2;
+    } else if (strcmp(cardNumber, "3") == 0) {
+        return 3;
+    } else if (strcmp(cardNumber, "4") == 0) {
+        return 4;
+    } else if (strcmp(cardNumber, "5") == 0) {
+        return 5;
+    } else if (strcmp(cardNumber, "6") == 0) {
+        return 6;
+    } else if (strcmp(cardNumber, "7") == 0) {
+        return 7;
+    } else if (strcmp(cardNumber, "8") == 0) {
+        return 8;
+    } else if (strcmp(cardNumber, "9") == 0) {
+        return 9;
+    } else if (strcmp(cardNumber, "T") == 0) {
+        return 10;
+    } else if (strcmp(cardNumber, "J") == 0) {
+        return 11;
+    } else if (strcmp(cardNumber, "Q") == 0) {
+        return 12;
+    } else if (strcmp(cardNumber, "K") == 0) {
+        return 2;
+    } else {
+        return -1;
+    }
+}

@@ -17,8 +17,8 @@ int main() {
     char secondCommand[100];
 
 
-    // Print default empty board
-    printBoard(message);
+    printEmptyBoard();
+
 
     while (startUpPhase == 1) {
         printCommandBox(firstCommand, secondCommand, lastCommand, message);
@@ -55,6 +55,7 @@ int main() {
         else if (strcmp(firstCommand, "SW") == 0) {
             showAllCards();
             printBoard(message);
+            strcpy(message, "OK");
         }
             // SPLIT DECK OF CARDS (SPLIT <number>)
         else if (strcmp(firstCommand, "SI") == 0) {
@@ -65,10 +66,13 @@ int main() {
 
                 int cardPosition = rand() % 52;
                 splitShuffleDeck(cardPosition, message);
+                strcpy(message, "OK");
+
             } else {
                 int cardPosition = atoi(secondCommand);
                 if (cardPosition > 1 && cardPosition < 52) {
                     splitShuffleDeck(cardPosition, message);
+                    strcpy(message, "OK");
 
                 } else {
                     strcpy(message, "Error: CardPosition not valid");
@@ -82,6 +86,8 @@ int main() {
             } else {
                 shuffleDeck(message);
                 printBoard(message);
+                strcpy(message, "OK");
+
             }
         }
 
@@ -103,7 +109,6 @@ int main() {
                 printBoard(message);
             }
         } else {
-            printBoard(message);
             strcpy(message, " ");
         }
 
@@ -116,6 +121,7 @@ int main() {
 
             // QUIT CURRENT GAME AND RETURN TO START UP PHASE (Q)
             if (strcmp(firstCommand, "Q") == 0) {
+                showAllCards();
                 strcpy(message, "Returned to STARTUP PHASE");
                 printBoard(message);
                 gameStarted = 0;
@@ -134,10 +140,27 @@ int main() {
                     strcmp(firstCommand, "SE") == 0 ||
                     strcmp(firstCommand, "SD") == 0
                     ) {
-                strcpy(message, "Comman´d not available in the PLAY phase");
-            } else {
-                printBoard(message);
+                strcpy(message, "Command not available in the PLAY phase");
+            } else if (firstCommand[2] == '-' && firstCommand[3] == '>') {
+
+                // F4->C6
+                char column[3] = {firstCommand[0], firstCommand[1]};
+                char destination[3] = {firstCommand[4], firstCommand[5]};
+
+                cardMove(column, destination, message);
+
+
+            } else if (firstCommand[5] == '-' && firstCommand[6] == '>') {
+
+                // C6:4H->C4
+                char column[3] = {firstCommand[0], firstCommand[1]};
+                char mover[3] = {firstCommand[3], firstCommand[4]};
+                char destination[3] = {firstCommand[7], firstCommand[8]};
+
+                extendedCardMove(column, mover, destination, message);
             }
+            printBoard(message);
+
 
 //            // <Game Moves>
 //            struct card *temphead = head;
