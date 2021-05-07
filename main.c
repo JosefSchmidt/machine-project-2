@@ -17,10 +17,8 @@ int main() {
     char secondCommand[100];
 
 
-    int showCards = 0;
-
     // Print default empty board
-    printEmptyBoard();
+    printBoard(message);
 
     while (startUpPhase == 1) {
         printCommandBox(firstCommand, secondCommand, lastCommand, message);
@@ -37,11 +35,12 @@ int main() {
             } else {
                 uploadDeckOfCards(secondCommand, message);
             }
+            printHiddenBoard(message);
             resetCommands(firstCommand, secondCommand);
         }
 
-        // SAVE TO FILE
-         else if (strcmp(firstCommand, "SD") == 0) {
+            // SAVE TO FILE
+        else if (strcmp(firstCommand, "SD") == 0) {
             // If file is included
             if (secondCommand[0] == '\0') {
                 // Save to deck function...
@@ -54,14 +53,14 @@ int main() {
 
             // SHOW DECK OF CARDS (SW)
         else if (strcmp(firstCommand, "SW") == 0) {
+            showAllCards();
             printBoard(message);
-            showCards = 1;
         }
             // SPLIT DECK OF CARDS (SPLIT <number>)
         else if (strcmp(firstCommand, "SI") == 0) {
             if (head == NULL) {
                 strcpy(message, "Error! The deck is empty");
-                printEmptyBoard();
+                printBoard(message);
             } else if (secondCommand[0] == '\0') {
 
                 int cardPosition = rand() % 52;
@@ -73,15 +72,16 @@ int main() {
 
                 } else {
                     strcpy(message, "Error: CardPosition not valid");
-                    printEmptyBoard(message);
+                    printBoard(message);
                 }
             }
         } else if (strcmp(firstCommand, "SR") == 0) {
             if (head == NULL) {
                 strcpy(message, "Error! The deck is empty");
-                printEmptyBoard();
+                printBoard(message);
             } else {
                 shuffleDeck(message);
+                printBoard(message);
             }
         }
 
@@ -91,27 +91,19 @@ int main() {
         }
 
             // START GAME (P)
-         else if (strcmp(firstCommand, "P") == 0) {
+        else if (strcmp(firstCommand, "P") == 0) {
             // No cards on board
             if (head == NULL) {
                 // Print the empty board
                 strcpy(message, "ERROR no cards");
-                printEmptyBoard();
-            }else {
+            } else {
                 strcpy(message, "GAME STARTED");
                 gameStarted = 1;
                 sortGameCards();
-            }
-        } else {
-                // Cards are showing on board
-            if (showCards == 1) {
                 printBoard(message);
             }
-                // Cards are hidden on board
-            else {
-                printHiddenBoard(message);
-            }
-
+        } else {
+            printBoard(message);
             strcpy(message, " ");
         }
 
@@ -125,7 +117,7 @@ int main() {
             // QUIT CURRENT GAME AND RETURN TO START UP PHASE (Q)
             if (strcmp(firstCommand, "Q") == 0) {
                 strcpy(message, "Returned to STARTUP PHASE");
-
+                printBoard(message);
                 gameStarted = 0;
             }
 
@@ -142,46 +134,38 @@ int main() {
                     strcmp(firstCommand, "SE") == 0 ||
                     strcmp(firstCommand, "SD") == 0
                     ) {
-                strcpy(message, "Command not available in the PLAY phase");
-
+                strcpy(message, "Comman´d not available in the PLAY phase");
+            } else {
+                printBoard(message);
             }
 
-            // <Game Moves>
-            struct card *temphead = head;
-            int foundFirst = 0;
-            int foundSecond = 0;
+//            // <Game Moves>
+//            struct card *temphead = head;
+//            int foundFirst = 0;
+//            int foundSecond = 0;
+//
+//
+//            //Goes through all cards and sees if their name is equals to the first command.
+//            while(temphead!=NULL){
+//                if(strcmp(temphead->name, firstCommand)==0 && temphead->visible == 1){
+//                    foundFirst = 1;
+//                }
+//                if(strcmp(temphead->name, secondCommand)==0 && temphead->visible == 1){
+//                    foundSecond = 1;
+//                }
+//                //Check if visible
+//                if(foundFirst == 1 && foundSecond == 1){
+//                    printf("Found Card\n");
+//                    break;
+//                }
+//                temphead = temphead ->next;
+//
+//            }
+//            if(foundFirst == 1 && foundSecond == 0){
+//                printf("Card not found\n");
+//            }
 
-            //C4:H4->F5
-            if(firstCommand[5] == '-' && firstCommand[6] == '>'){
 
-            }
-
-            //C4->F5
-            if(firstCommand[2] == '-' && firstCommand[3] == '>'){
-
-            }
-            //Goes through all cards and sees if their name is equals to the first command.
-            while(temphead!=NULL){
-                if(strcmp(temphead->name, firstCommand)==0 && temphead->visible == 1){
-                    foundFirst = 1;
-                }
-                if(strcmp(temphead->name, secondCommand)==0 && temphead->visible == 1){
-                    foundSecond = 1;
-                }
-                //Check if visible
-                if(foundFirst == 1 && foundSecond == 1){
-                    printf("Found Card\n");
-                    break;
-                }
-                temphead = temphead ->next;
-
-            }
-            if(foundFirst == 1 && foundSecond == 0){
-                printf("Card not found\n");
-            }
-
-            // Print the empty board
-            printEmptyBoard();
         }
 
     }
