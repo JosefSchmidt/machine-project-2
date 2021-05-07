@@ -3,6 +3,7 @@
 #include <string.h>
 #pragma once
 
+
 // Function declarations
 char getDeckType();
 
@@ -94,10 +95,24 @@ void createDefaultCardList(char *message) {
         strcpy(message, "OK");
     }
 }
+void SaveDeckOfCards(char filePath[], char *message){
+    //"\Users\steve\CLionProjects\machine-project-2\Card.txt"
+    FILE *in_file = fopen(filePath, "w");
+
+    struct card *current = head;
+
+    while(current != NULL){//loops trough the deck until it is empty.
+
+        fprintf(in_file, "%s %s", current->name,"\n"); //print the cards in the file.
+        current = current->next;//set next card to current.
+    }
+    fclose(in_file);
+    strcpy(message, "Deck saved in file");
+}
 
 void uploadDeckOfCards(char filePath[], char *message) {
 
-    // "/Users/josefschmidt/Desktop/machine-project-2/my_file.txt"
+    // "/Users/josefschmidt/Desktop/machine-project-2/Card.txt"
     FILE *in_file = fopen(filePath, "r");
 
     // test for files not existing.

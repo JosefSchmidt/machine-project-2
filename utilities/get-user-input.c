@@ -1,11 +1,11 @@
 
 void getUserInput(char *firstCommand, char *secondCommand, char *lastCommand) {
-    char input[100];
-    char tempInput[100];
+    char input[200];
+    char tempInput[200];
     char *whiteSpaceSeparator;
     int count = 0;
 
-    fgets(input, 100, stdin);
+    fgets(input, 200, stdin);
 
     // Remove new line after in string after using fgets
     input[strcspn(input, "\n")] = 0;
