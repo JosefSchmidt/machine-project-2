@@ -26,6 +26,8 @@ void printBoard();
 
 void showAllCards();
 
+void showHiddenCard();
+
 int getColumnInteger();
 
 int getCardValue();
@@ -733,6 +735,7 @@ void extendedCardMove(char *columnName, char *moverName, char *destinationName, 
 
     strcpy(message, "OK");
 
+    showHiddenCard(columnNr);
 
 
 }
@@ -741,16 +744,16 @@ void cardMove() {
 
 }
 
-void showHiddenCard(){
+void showHiddenCard(int columnNr){
     int currentLargestY = 0;
     struct card *current = head;
-
+    int xPosition = columnNr;
 
 
     while(current != NULL){
-        if (current->previous == NULL) {
+        if (current->previous == NULL ) {
             currentLargestY = current->y;
-        } else  {
+        } else  if(current->x == xPosition){
             if (currentLargestY < current->y) {
                 currentLargestY = current->y;
             }
@@ -758,8 +761,9 @@ void showHiddenCard(){
         current = current->next;
     }
     current = head;
+
     while(current != NULL){
-        if(currentLargestY == current->y && current->visible == 0){
+        if(currentLargestY == current->y && current->visible == 0 && current->x == xPosition){
             current->visible = 1;
         }
         current = current->next;
