@@ -734,10 +734,36 @@ void extendedCardMove(char *columnName, char *moverName, char *destinationName, 
     strcpy(message, "OK");
 
 
+
 }
 
 void cardMove() {
 
+}
+
+void showHiddenCard(){
+    int currentLargestY = 0;
+    struct card *current = head;
+
+
+
+    while(current != NULL){
+        if (current->previous == NULL) {
+            currentLargestY = current->y;
+        } else  {
+            if (currentLargestY < current->y) {
+                currentLargestY = current->y;
+            }
+        }
+        current = current->next;
+    }
+    current = head;
+    while(current != NULL){
+        if(currentLargestY == current->y && current->visible == 0){
+            current->visible = 1;
+        }
+        current = current->next;
+    }
 }
 
 int getColumnInteger(char *columnName) {
