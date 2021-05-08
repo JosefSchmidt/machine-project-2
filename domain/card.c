@@ -749,6 +749,7 @@ void cardMove(char *columnName, char *destinationName, char *message) {
     int destinationNr = getColumnInteger(destinationName);
 
 
+    showHiddenCard(columnNr);
 }
 
 void showHiddenCard(int columnNr){
