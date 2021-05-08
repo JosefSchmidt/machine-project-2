@@ -555,6 +555,7 @@ void extendedCardMove(char *columnName, char *moverName, char *destinationName, 
 
 
     int columnNr = getColumnInteger(columnName);
+    int destinationNr = getColumnInteger(destinationName);
 
     // Not valid column name
     if (columnNr == -1) {
@@ -579,8 +580,8 @@ void extendedCardMove(char *columnName, char *moverName, char *destinationName, 
         current = current->next;
     }
 
-    int destinationNr = getColumnInteger(destinationName);
 
+    //beginning of F move
     if (destinationNr == 10 || destinationNr == 20 || destinationNr == 30 || destinationNr == 40) {
 
         int found = 0;
@@ -615,7 +616,6 @@ void extendedCardMove(char *columnName, char *moverName, char *destinationName, 
                 return;
             }
         } else {
-            current = head;
 
             // Is the moverCard for the correct f destination and is it an es
             if (mover->name[0] == 'A') {
@@ -740,13 +740,20 @@ void extendedCardMove(char *columnName, char *moverName, char *destinationName, 
 
 }
 
-void cardMove() {
+void cardMove(char *columnName, char *destinationName, char *message) {
+    struct card *destination = NULL;
+    struct card *fCard = NULL;
+    struct card *current = head;
+
+    int columnNr = getColumnInteger(columnName);
+    int destinationNr = getColumnInteger(destinationName);
+
 
 }
 
 void showHiddenCard(int columnNr){
-    int currentLargestY = 0;
     struct card *current = head;
+    int currentLargestY = 0;
     int xPosition = columnNr;
 
 

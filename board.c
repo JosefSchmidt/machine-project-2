@@ -61,14 +61,13 @@ void printHiddenBoard(char *message) {
 void printBoard(char *message) {
     struct card *current = head;
     int count = 0;
+    int y = getHighestCardPosition();
+    int fCount = 1;
 
     if (current == NULL) {
         strcpy(message, "Error! The deck is empty");
         return;
     }
-
-    int y = getHighestCardPosition();
-    int fCount = 1;
 
 
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n");
