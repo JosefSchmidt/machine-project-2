@@ -744,10 +744,161 @@ void cardMove(char *columnName, char *destinationName, char *message) {
     struct card *destination = NULL;
     struct card *fCard = NULL;
     struct card *current = head;
-
+    struct card *mover = NULL;
+    int currentLargestY = 0;
     int columnNr = getColumnInteger(columnName);
     int destinationNr = getColumnInteger(destinationName);
 
+    if (columnNr == -1) {
+        strcpy(message, "Error: No a valid input form");
+        return;
+    }
+    //check highest position y in a column and set that card to the mover
+    while(current != NULL){
+        if (current->previous == NULL ) {
+            currentLargestY = current->y;
+        } else if(current->x == columnNr){
+            if (currentLargestY < current->y) {
+                currentLargestY = current->y;
+                mover = current;
+            }
+        }
+        current = current->next;
+    }
+
+    current = head;
+
+    // It's a column
+    while (current != NULL) {
+        if (strcmp(mover->name, current->name) == 0) {
+            if (current->visible != 1) {
+                strcpy(message, "Error: MoverCard is not visible");
+                return;
+            } else if ( current->fPosition != columnNr) {
+                strcpy(message, "Error: MoverCard not in specfied column");
+                return;
+            }
+            break;
+        }
+        current = current->next;
+    }
+
+    //beginning of F move
+    if (destinationNr == 10 || destinationNr == 20 || destinationNr == 30 || destinationNr == 40) {
+
+        int found = 0;
+        while (current != NULL) {
+            if (current->fPosition == destinationNr) {
+                fCard = current;
+                found = 1;
+                current = head;
+                break;
+            }
+            current = current->next;
+        }
+
+        if (found == 1) {
+            // Check if card value is one timer larger than moverCard
+            if (fCard->name[1] == mover->name[1]) {
+                char input1[2] = {fCard->name[0]};
+                char input2[2] = {mover->name[0]};
+                int fCardValue = getCardValue(input1);
+                int moverCardValue = getCardValue(input2);
+                if (moverCardValue - fCardValue == 1) {
+                    mover->fPosition = fCard->fPosition;
+                    mover->x = -1;
+                    mover->y = -1;
+                    fCard->fPosition = -1;
+                } else {
+                    strcpy(message, "Error: Move not allowed");
+                    return;
+                }
+            } else {
+                strcpy(message, "Error: Move not allowed");
+                return;
+            }
+        } else {
+
+            // Is the moverCard for the correct f destination and is it an es
+            if (mover->name[0] == 'A') {
+                if (
+                        (mover->name[1] == 'C' && destinationNr == 10) ||
+                        (mover->name[1] == 'D' && destinationNr == 20) ||
+                        (mover->name[1] == 'H' && destinationNr == 30) ||
+                        (mover->name[1] == 'S' && destinationNr == 40)
+                        ) {
+                    mover->x = -1;
+                    mover->y = -1;
+                    mover->fPosition = destinationNr;
+                } else {
+                    strcpy(message, "Error: Move not allowed");
+                    return;
+                }
+            } else {
+                strcpy(message, "Error: Move not allowed");
+                return;
+            }
+        }
+
+    }
+    int highestCount = -1;
+
+    while (current != NULL) {
+        if (destinationNr == current->x && highestCount < current->y) {
+            highestCount = current->y;
+            destination = current;
+        }
+        current = current->next;
+    }
+    current = head;
+
+
+    if (destination == NULL) {
+        int previousY = mover->y;
+        int previousX = mover->x;
+
+        mover->y = 0;
+        mover->x = destinationNr;
+
+
+        if (previousY > 0) {
+            while (current != NULL) {
+                if (current->x == previousX && current->y == previousY - 1) {
+                    current->visible = 1;
+                    break;
+                }
+                current = current->next;
+            }
+            current = head;
+        } else {
+            if (mover->name[1] != destination->name[1]) {
+                char input1[2] = {mover->name[0]};
+                char input2[2] = {destination->name[0]};
+
+                int moverValue = getCardValue(input1);
+                int destinationValue = getCardValue(input2);
+                if (destinationValue - moverValue == 1) {
+
+                    mover->y = destination->y + 1;
+                    mover->x = destination->x;
+
+                    if (previousY > 0) {
+                        while (current != NULL) {
+                            if (current->x == previousX && current->y == previousY - 1) {
+                                current->visible = 1;
+                                break;
+                            }
+                            current = current->next;
+                        }
+                        current = head;
+                    } else {
+                        strcpy(message, "Error: Move not allowed");
+                        return;
+                    }
+                }
+            }
+        }
+    }
 
     showHiddenCard(columnNr);
 }
@@ -757,7 +908,7 @@ void showHiddenCard(int columnNr){
     int currentLargestY = 0;
     int xPosition = columnNr;
 
-
+    //get the highest y position in the right column
     while(current != NULL){
         if (current->previous == NULL ) {
             currentLargestY = current->y;
@@ -770,6 +921,7 @@ void showHiddenCard(int columnNr){
     }
     current = head;
 
+    //set the card to visible
     while(current != NULL){
         if(currentLargestY == current->y && current->visible == 0 && current->x == xPosition){
             current->visible = 1;
@@ -808,7 +960,7 @@ int getColumnInteger(char *columnName) {
     } else {
         return -1;
     }
-};
+}
 
 int getCardValue(char *cardNumber) {
     if (strcmp(cardNumber, "A") == 0) {
